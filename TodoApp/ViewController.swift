@@ -60,11 +60,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             if let id = jsonArray![indexPath.row]["_id"] as? String {
                 print("ID is "+id)
                 
-                dispatch_async(dispatch_get_main_queue(), {
+                Alamofire.request(.DELETE, "https://alamofire.herokuapp.com/todo/"+id).responseString(completionHandler: { (response) in
                     self.downloadAndUpdate()
                 })
-             
-               
+                                   
             }
         } else if editingStyle == .Insert {
             
