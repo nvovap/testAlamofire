@@ -37,9 +37,14 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             //            print(response.result)
             
             if let JSON = response.result.value {
+                
                 self.jsonArray = JSON as? NSMutableArray
                 
-                self.tableView.reloadData()
+                
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.tableView.reloadData()
+                })
+                
                 
             }
         }
@@ -55,12 +60,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             if let id = jsonArray![indexPath.row]["_id"] as? String {
                 print("ID is "+id)
                 
-                Alamofire.request(.DELETE, "https://alamofire.herokuapp.com/todo/"+id).responseString(completionHandler: { (response) in
-                    dispatch_async(dispatch_get_main_queue(), { 
-                        self.downloadAndUpdate()
-                    })
-                    
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.downloadAndUpdate()
                 })
+             
                
             }
         } else if editingStyle == .Insert {
